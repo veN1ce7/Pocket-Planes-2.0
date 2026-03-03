@@ -412,6 +412,7 @@ var planes = [
 ['Supergopher',4,1,1,1100,160,1.2],
 ['Tetra',24,3,10,2300,303,10],
 ['Wallaby',1,1,2,700,143,2.2],
+['X10 Mapple Pro',8,1,4,1050,180,4],
 ];
 
 function reverse(a, b) {
