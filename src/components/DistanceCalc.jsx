@@ -1,8 +1,10 @@
 import React from 'react';
-import SelectSearch from 'react-select-search';
+import SelectSearchModule from 'react-select-search';
 import './DistanceCalc.css';
 import { useState } from 'react';
 import { airports, planes } from '../vars';
+
+const SelectSearch = SelectSearchModule.default || SelectSearchModule;
 
 function DistanceCalc() {
   const [fromCity, setFromCity] = useState();
