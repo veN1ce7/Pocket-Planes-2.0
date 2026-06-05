@@ -126,64 +126,64 @@ function Airplanes() {
     });
   };
   return (
-    <table class='rounded block max-w-fit mx-auto overflow-x-auto whitespace-no-wrap'>
-      <thead class=''>
-        <tr class='text-left border-b border-gray-300'>
+    <table className='rounded block max-w-fit mx-auto overflow-x-auto whitespace-no-wrap'>
+      <thead className=''>
+        <tr className='text-left border-b border-gray-300'>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortName}
           >
             Name
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortAvailible}
           >
             Available at
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortClass}
           >
             Class
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortCapacity}
           >
             Capacity
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortRange}
           >
             Range
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortSpeed}
           >
             Speed
           </th>
           <th
-            class='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
+            className='px-4 py-3 hover:bg-slate-700 rounded cursor-pointer'
             onClick={sortWeight}
           >
             Weight
           </th>
         </tr>
       </thead>
-      <tbody class='text-left table-body'>
+      <tbody className='text-left table-body'>
         {data.map((airport) => {
           return (
             <tr key={airport[0]}>
-              <td class='px-4 py-3'>{airport[0]}</td>
-              <td class='px-4 py-3'>{airport[1]}</td>
-              <td class='px-4 py-3'>{airport[2]}</td>
-              <td class='px-4 py-3'>{airport[3]}</td>
-              <td class='px-4 py-3'>{airport[4]}</td>
-              <td class='px-4 py-3'>{airport[5]}</td>
-              <td class='px-4 py-3'>{airport[6]}</td>
+              <td className='px-4 py-3'>{airport[0]}</td>
+              <td className='px-4 py-3'>{airport[1]}</td>
+              <td className='px-4 py-3'>{airport[2]}</td>
+              <td className='px-4 py-3'>{airport[3]}</td>
+              <td className='px-4 py-3'>{airport[4]}</td>
+              <td className='px-4 py-3'>{airport[5]}</td>
+              <td className='px-4 py-3'>{airport[6]}</td>
             </tr>
           );
         })}

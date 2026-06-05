@@ -1,9 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import Airplanes from './components/Airplanes';
 import Airports from './components/Airports';
 import DistanceCalc from './components/DistanceCalc';
-import Earnings from './components/Earnings';
 
 function App() {
   return (
@@ -11,7 +9,7 @@ function App() {
       <h1 className='text-3xl font-bold p-4 text-center'>
         Pocket Planes Calculator
       </h1>
-      {/* <Earnings /> */}
+
       <div className='container px-4 mx-auto'>
         <p className='text-left'>
           This is a collection of tools and data for Pocket Planes. These tools
@@ -35,8 +33,10 @@ function App() {
         Airport Distance Calculator
       </h2>
       <DistanceCalc />
+
       <h2 className='text-xl font-bold p-4 text-center'>Airplane Data</h2>
       <Airplanes />
+
       <h2 className='text-xl font-bold p-4 text-center'>Airport Data</h2>
       <Airports />
     </div>
