@@ -2,12 +2,14 @@ FROM docker.io/library/node:20-bookworm-slim AS build
 
 WORKDIR /app
 
-# package-lock.json w tym repozytorium jest pusty,
-# więc instalujemy zależności wyłącznie na podstawie package.json.
 COPY package.json ./
 RUN npm install
 
 COPY . .
+
+# Generuj względne ścieżki:
+# ./static/js/... zamiast /static/js/...
+ENV PUBLIC_URL=.
 
 RUN npm run build
 
@@ -18,7 +20,7 @@ WORKDIR /site
 
 COPY --from=build /app/build/ ./
 
-# GitHub Pages ma serwować gotowe pliki bez przetwarzania przez Jekyll.
+# GitHub Pages ma publikować pliki statyczne bez Jekylla.
 RUN touch .nojekyll
 
 CMD ["sh", "-c", "find /site -maxdepth 3 -type f | sort"]
