@@ -62,6 +62,9 @@ function DistanceCalc() {
       } else if (distance <= Math.floor(plane[4] * 1.15)) {
         color = 'bg-yellow-200 dark:bg-yellow-700';
         upgradeRequired = ' (+15%)';
+      } else if (distance <= Math.floor(plane[4] * 1.2)) {
+        color = 'bg-amber-400 dark:bg-amber-500';
+        upgradeRequired = ' (+20% VIP)';
       }
       if (
         plane[2] > airportDict[fromCity]['class'] ||
