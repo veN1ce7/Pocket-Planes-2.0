@@ -1,0 +1,10 @@
+{
+  "short_name": "PP Calc",
+  "name": "Pocket Planes Calculator",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
