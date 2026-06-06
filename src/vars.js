@@ -252,6 +252,13 @@ export const airports = [
   ['Zanzibar', 1, 6856, 5392],
 ];
 
+
+export const carriers = [
+  ['HMS Ark', 1],
+  ['USS Midway', 1],
+  ['USS Ford', 2],
+];
+
 export const planes = [
   ['Aeroeagle', 16, 2, 6, 2000, 220, 6],
   ['Airvan', 5, 1, 3, 840, 163, 3],
@@ -262,16 +269,21 @@ export const planes = [
   ['Bobcat', '-', 1, 1, 600, 135, 1],
   ['C-130 Hercules', '-', 3, 10, 2700, 200, 10],
   ['Cloudliner', 28, 3, 17, 3110, 320, 17],
+  ['CloudMax', '-', 3, 32, 3110, 320, 25.5],
   ['Concorde', '-', 3, 8, 3500, 400, 8],
   ['Cyclone', 26, 3, 12, 2820, 295, 12],
+  ['E10 Mapple Pro', 8, 1, 4, 525, 180, 4],
   ['Equinox', 12, 2, 3, 1600, 215, 3],
   ['Fogbuster', 20, 3, 8, 2600, 312, 8],
+  ['FondaJet', '-', 1, 3, 1610, 215, 3],
   ['Griffon', 1, 1, 1, 800, 140, 1.1],
   ['Hot Air Balloon', '-', 1, 1, 800, 15, 0],
   ['Huey', '-', 1, 3, 600, 125, 3],
   ['Kangaroo', 7, 1, 4, 945, 125, 4],
+  ['Kringle Kruiser', '-', 1, 3, 1500, 200, 2.9],
   ['Mohawk', 8, 1, 3, 1000, 172, 3.2],
   ['Navigator', 1, 1, 2, 600, 165, 2],
+  ['Noki B6', 30, 1, 1, 820, 160, 1],
   ['P-40 Warhawk', '-', 1, 1, 600, 135, 1],
   ['Pearjet', 14, 2, 5, 1947, 272, 5],
   ['Sea Knight', '-', 1, 5, 800, 130, 5],
@@ -279,5 +291,7 @@ export const planes = [
   ['Starship', '-', 3, 3, 4000, 400, 6],
   ['Supergopher', 4, 1, 1, 1100, 160, 1.2],
   ['Tetra', 24, 3, 10, 2300, 303, 10],
+  ['UAV', 30, 2, 3, 2100, 280, 1.9],
   ['Wallaby', 1, 1, 2, 700, 143, 2.2],
+  ['X10 Mapple Pro', 8, 1, 4, 1050, 180, 4],
 ];

@@ -1,64 +1,102 @@
-export const buildAirportDict = (airports) =>
-  airports.reduce((acc, [city, clazz, xCoord, yCoord]) => {
-    acc[city] = { class: clazz, x: xCoord, y: yCoord };
-    return acc;
-  }, {});
+import { AIRPORT_TYPE, CARRIER_TYPE } from './dataAdapters';
 
-export const calculateDistance = (fromCity, toCity, airportDict) => {
-  if (!fromCity || !toCity) {
-    return null;
-  }
-
-  const fromAirport = airportDict[fromCity];
-  const toAirport = airportDict[toCity];
-
-  if (!fromAirport || !toAirport) {
+export const calculateDistance = (fromLocation, toLocation) => {
+  if (!fromLocation || !toLocation) {
     return null;
   }
 
   const distance = Math.sqrt(
-    Math.pow(fromAirport.x - toAirport.x, 2) +
-      Math.pow(fromAirport.y - toAirport.y, 2)
+    Math.pow(fromLocation.x - toLocation.x, 2) +
+      Math.pow(fromLocation.y - toLocation.y, 2)
   );
 
   return Math.floor(distance);
 };
 
-export const getPlaneRouteStatus = (plane, distance, fromCity, toCity, airportDict) => {
-  const [, , planeClass, , range] = plane;
+export const canPlaneLandAtLocation = (plane, location) => {
+  if (!plane || !location) {
+    return false;
+  }
 
-  if (!distance || !fromCity || !toCity) {
+  if (location.type === AIRPORT_TYPE || location.type === CARRIER_TYPE) {
+    const requiredAirportClass =
+      plane.landingRules?.minAirportClass ?? plane.airportClass;
+
+    return requiredAirportClass <= location.airportClass;
+  }
+
+  return false;
+};
+
+export const canPlaneFlyRoute = (plane, fromLocation, toLocation) =>
+  canPlaneLandAtLocation(plane, fromLocation) &&
+  canPlaneLandAtLocation(plane, toLocation);
+
+export const getPlaneRangeStatus = (plane, distance) => {
+  if (!distance) {
     return {
       colorClass: 'bg-slate-200 dark:bg-slate-700',
       upgradeRequired: '',
     };
   }
 
-  let colorClass = 'bg-slate-200 dark:bg-slate-700';
-  let upgradeRequired = '';
-
-  if (distance <= range) {
-    colorClass = 'bg-green-200 dark:bg-green-700';
-  } else if (distance <= Math.floor(range * 1.05)) {
-    colorClass = 'bg-yellow-200 dark:bg-yellow-700';
-    upgradeRequired = ' (+5%)';
-  } else if (distance <= Math.floor(range * 1.1)) {
-    colorClass = 'bg-yellow-200 dark:bg-yellow-700';
-    upgradeRequired = ' (+10%)';
-  } else if (distance <= Math.floor(range * 1.15)) {
-    colorClass = 'bg-yellow-200 dark:bg-yellow-700';
-    upgradeRequired = ' (+15%)';
-  } else if (distance <= Math.floor(range * 1.2)) {
-    colorClass = 'bg-amber-400 dark:bg-amber-500';
-    upgradeRequired = ' (+20% VIP)';
+  if (distance <= plane.range) {
+    return {
+      colorClass: 'bg-green-200 dark:bg-green-700',
+      upgradeRequired: '',
+    };
   }
 
-  if (
-    planeClass > airportDict[fromCity].class ||
-    planeClass > airportDict[toCity].class
-  ) {
-    colorClass = 'bg-red-200 dark:bg-red-700';
+  if (distance <= Math.floor(plane.range * 1.05)) {
+    return {
+      colorClass: 'bg-yellow-200 dark:bg-yellow-700',
+      upgradeRequired: ' (+5%)',
+    };
   }
 
-  return { colorClass, upgradeRequired };
+  if (distance <= Math.floor(plane.range * 1.1)) {
+    return {
+      colorClass: 'bg-yellow-200 dark:bg-yellow-700',
+      upgradeRequired: ' (+10%)',
+    };
+  }
+
+  if (distance <= Math.floor(plane.range * 1.15)) {
+    return {
+      colorClass: 'bg-yellow-200 dark:bg-yellow-700',
+      upgradeRequired: ' (+15%)',
+    };
+  }
+
+  if (distance <= Math.floor(plane.range * 1.2)) {
+    return {
+      colorClass: 'bg-amber-400 dark:bg-amber-500',
+      upgradeRequired: ' (+20% VIP)',
+    };
+  }
+
+  return {
+    colorClass: 'bg-slate-200 dark:bg-slate-700',
+    upgradeRequired: '',
+  };
+};
+
+export const getPlaneRouteStatus = (plane, distance, fromLocation, toLocation) => {
+  if (!distance || !fromLocation || !toLocation) {
+    return {
+      colorClass: 'bg-slate-200 dark:bg-slate-700',
+      upgradeRequired: '',
+    };
+  }
+
+  const rangeStatus = getPlaneRangeStatus(plane, distance);
+
+  if (!canPlaneFlyRoute(plane, fromLocation, toLocation)) {
+    return {
+      ...rangeStatus,
+      colorClass: 'bg-red-200 dark:bg-red-700',
+    };
+  }
+
+  return rangeStatus;
 };
