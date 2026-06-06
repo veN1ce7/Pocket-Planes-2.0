@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import './DistanceCalc.css';
 import { airports, carriers, planes } from '../vars';
 import AirportPicker from './AirportPicker';
-import CarrierPositionManager from './CarrierPositionManager';
 import {
   airportArrayToLocation,
   carrierToLocation,
@@ -17,12 +16,9 @@ import {
   saveCarrierPositions,
 } from '../utils/carrierPositions';
 
-function DistanceCalc() {
+function DistanceCalc({ carrierPositions, setCarrierPositions }) {
   const [fromLocationId, setFromLocationId] = useState();
   const [toLocationId, setToLocationId] = useState();
-  const [carrierPositions, setCarrierPositions] = useState(() =>
-    loadCarrierPositions()
-  );
 
   useEffect(() => {
     saveCarrierPositions(carrierPositions);
@@ -35,9 +31,9 @@ function DistanceCalc() {
 
   const carrierLocations = useMemo(
     () =>
-      carriers
-        .map((carrier) => carrierToLocation(carrier, carrierPositions[carrier[0]]))
-        .filter(Boolean),
+      carriers.map((carrier) =>
+        carrierToLocation(carrier, carrierPositions[carrier[0]])
+      ),
     [carrierPositions]
   );
 
@@ -46,43 +42,22 @@ function DistanceCalc() {
     [airportLocations, carrierLocations]
   );
 
-  const planeData = useMemo(() => planes.map(planeArrayToObject), []);
-
-  const locationDict = useMemo(
+  const selectableLocationDict = useMemo(
     () =>
-      locations.reduce((acc, location) => {
-        acc[location.id] = location;
-        return acc;
-      }, {}),
+      locations
+        .filter((location) => !location.isMissingCoordinates)
+        .reduce((acc, location) => {
+          acc[location.id] = location;
+          return acc;
+        }, {}),
     [locations]
   );
 
-  const fromLocation = fromLocationId ? locationDict[fromLocationId] : null;
-  const toLocation = toLocationId ? locationDict[toLocationId] : null;
+  const planeData = useMemo(() => planes.map(planeArrayToObject), []);
+
+  const fromLocation = fromLocationId ? selectableLocationDict[fromLocationId] : null;
+  const toLocation = toLocationId ? selectableLocationDict[toLocationId] : null;
   const distance = calculateDistance(fromLocation, toLocation);
-
-  const saveCarrierPosition = (carrierName, position) => {
-    setCarrierPositions((current) => ({
-      ...current,
-      [carrierName]: position,
-    }));
-  };
-
-  const clearCarrierPosition = (carrierName) => {
-    setCarrierPositions((current) => {
-      const next = { ...current };
-      delete next[carrierName];
-      return next;
-    });
-
-    if (fromLocationId === `carrier:${carrierName}`) {
-      setFromLocationId(undefined);
-    }
-
-    if (toLocationId === `carrier:${carrierName}`) {
-      setToLocationId(undefined);
-    }
-  };
 
   const planeRender = (plane) => {
     const { colorClass, upgradeRequired } = getPlaneRouteStatus(
@@ -101,13 +76,6 @@ function DistanceCalc() {
 
   return (
     <div className='container mx-auto'>
-      <CarrierPositionManager
-        carriers={carriers}
-        positions={carrierPositions}
-        onSavePosition={saveCarrierPosition}
-        onClearPosition={clearCarrierPosition}
-      />
-
       <div className='flex flex-wrap justify-center gap-2'>
         <AirportPicker
           label='Pick Starting Location'

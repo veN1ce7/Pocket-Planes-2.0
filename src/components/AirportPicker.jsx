@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { getLocationLabel } from '../utils/dataAdapters';
+import { getLocationLabel, CARRIER_TYPE } from '../utils/dataAdapters';
 
 function AirportPicker({ label, options, value, onChange }) {
   const selectedLocation = options.find((option) => option.id === value);
@@ -12,17 +12,21 @@ function AirportPicker({ label, options, value, onChange }) {
     const normalizedQuery = query.trim().toLowerCase();
 
     if (!normalizedQuery) {
-      return options.slice(0, 25);
+      return options.slice(0, 30);
     }
 
     return options
       .filter((option) =>
         getLocationLabel(option).toLowerCase().includes(normalizedQuery)
       )
-      .slice(0, 25);
+      .slice(0, 30);
   }, [options, query]);
 
   const selectLocation = (location) => {
+    if (location.isMissingCoordinates) {
+      return;
+    }
+
     setQuery(getLocationLabel(location));
     setIsOpen(false);
     onChange(location.id);
@@ -50,8 +54,12 @@ function AirportPicker({ label, options, value, onChange }) {
             setIsOpen(false);
           }
 
-          if (event.key === 'Enter' && filteredOptions.length > 0) {
-            selectLocation(filteredOptions[0]);
+          const firstAvailable = filteredOptions.find(
+            (option) => !option.isMissingCoordinates
+          );
+
+          if (event.key === 'Enter' && firstAvailable) {
+            selectLocation(firstAvailable);
           }
         }}
       />
@@ -59,17 +67,33 @@ function AirportPicker({ label, options, value, onChange }) {
       {isOpen && (
         <div className='absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded border border-slate-300 bg-white text-left shadow-lg'>
           {filteredOptions.length > 0 ? (
-            filteredOptions.map((option) => (
-              <button
-                key={option.id}
-                className='block w-full px-3 py-2 text-left text-slate-900 hover:bg-slate-100'
-                type='button'
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => selectLocation(option)}
-              >
-                {getLocationLabel(option)}
-              </button>
-            ))
+            filteredOptions.map((option) => {
+              const isMissingCarrier =
+                option.type === CARRIER_TYPE && option.isMissingCoordinates;
+
+              return (
+                <button
+                  key={option.id}
+                  className={
+                    'block w-full px-3 py-2 text-left ' +
+                    (isMissingCarrier
+                      ? 'cursor-not-allowed bg-red-100 text-red-800'
+                      : 'text-slate-900 hover:bg-slate-100')
+                  }
+                  type='button'
+                  disabled={isMissingCarrier}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => selectLocation(option)}
+                >
+                  {getLocationLabel(option)}
+                  {isMissingCarrier && (
+                    <span className='block text-xs'>
+                      Missing coordinates
+                    </span>
+                  )}
+                </button>
+              );
+            })
           ) : (
             <div className='px-3 py-2 text-slate-500'>No locations found</div>
           )}

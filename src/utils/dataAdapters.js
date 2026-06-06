@@ -26,23 +26,24 @@ export const airportArrayToLocation = (airport) => {
     airportClass,
     x,
     y,
+    isMissingCoordinates: false,
   };
 };
 
 export const carrierToLocation = (carrier, position) => {
   const [name, airportClass] = carrier;
 
-  if (!position || !Number.isFinite(position.x) || !Number.isFinite(position.y)) {
-    return null;
-  }
+  const hasCoordinates =
+    position && Number.isFinite(position.x) && Number.isFinite(position.y);
 
   return {
     id: `carrier:${name}`,
     name,
     type: CARRIER_TYPE,
     airportClass,
-    x: position.x,
-    y: position.y,
+    x: hasCoordinates ? position.x : null,
+    y: hasCoordinates ? position.y : null,
+    isMissingCoordinates: !hasCoordinates,
   };
 };
 
