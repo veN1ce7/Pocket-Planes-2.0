@@ -40,26 +40,38 @@ function App() {
   return (
     <div className='App'>
       <h1 className='text-3xl font-bold p-4 text-center'>
-        Pocket Planes Calculator
+        Pocket Planes Calculator 2.0
       </h1>
 
       <div className='container px-4 mx-auto'>
         <p className='text-left'>
-          This is a collection of tools and data for Pocket Planes. These tools
-          are designed to assist you in making informed decisions while building
-          your airline empire.
+          Pocket Planes Calculator 2.0 is a modernized and actively maintained
+          collection of tools and reference data for Pocket Planes. The project
+          is designed to help players plan routes, evaluate aircraft
+          capabilities, and make informed decisions while building their airline
+          empire.
         </p>
+
         <p className='text-left'>
-          Credit goes to{' '}
+          Special thanks to{' '}
           <a
             className='underline'
             href='http://therustysnowman.com/proj/pocketplanes.php'
           >
-            the rusty snowman
+            The Rusty Snowman
           </a>{' '}
-          for creating the original tool. My aim was to enhance its
-          responsiveness and appearance on mobile devices.
+          for creating the original Pocket Planes route calculator and data
+          reference, and to{' '}
+	  <a
+	    className='underline'
+	    href='https://github.com/Jmshaver'
+   	  > 
+	    Jmshaver 
+	  </a>{' '}
+          for developing the first modern web
+          implementation that inspired this project.
         </p>
+
       </div>
 
       <h2 className='text-xl font-bold p-4 text-center'>
