@@ -252,7 +252,21 @@ export const airports = [
   ['Zanzibar', 1, 6856, 5392],
 ];
 
+
+export const carriers = [
+  ['HMS Ark', 1],
+  ['USS Midway', 1],
+  ['USS Ford', 2],
+];
+
 export const planes = [
+  ['CloudMax', '-', 3, 32, 3110, 320, 25.5],
+  ['X10 Mapple Pro', 8, 1, 4, 1050, 180, 4],
+  ['E10 Mapple Pro', 8, 1, 4, 525, 180, 4],
+  ['FondaJet', '-', 1, 3, 1610, 215, 3],
+  ['UAV', 30, 2, 3, 2100, 280, 1.9],
+  ['Noki B6', 30, 1, 1, 820, 160, 1],
+  ['Kringle Kruiser', '-', 1, 3, 1500, 200, 2.9],
   ['Aeroeagle', 16, 2, 6, 2000, 220, 6],
   ['Airvan', 5, 1, 3, 840, 163, 3],
   ['Anan', 6, 1, 3, 656, 176, 3],

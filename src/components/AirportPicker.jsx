@@ -1,29 +1,35 @@
 import { useMemo, useState } from 'react';
+import { getLocationLabel } from '../utils/dataAdapters';
 
 function AirportPicker({ label, options, value, onChange }) {
-  const [query, setQuery] = useState(value || '');
+  const selectedLocation = options.find((option) => option.id === value);
+  const [query, setQuery] = useState(
+    selectedLocation ? getLocationLabel(selectedLocation) : ''
+  );
   const [isOpen, setIsOpen] = useState(false);
 
   const filteredOptions = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
     if (!normalizedQuery) {
-      return options.slice(0, 20);
+      return options.slice(0, 25);
     }
 
     return options
-      .filter((option) => option.name.toLowerCase().includes(normalizedQuery))
-      .slice(0, 20);
+      .filter((option) =>
+        getLocationLabel(option).toLowerCase().includes(normalizedQuery)
+      )
+      .slice(0, 25);
   }, [options, query]);
 
-  const selectAirport = (airportName) => {
-    setQuery(airportName);
+  const selectLocation = (location) => {
+    setQuery(getLocationLabel(location));
     setIsOpen(false);
-    onChange(airportName);
+    onChange(location.id);
   };
 
   return (
-    <div className='relative w-64'>
+    <div className='relative w-72'>
       <label className='sr-only'>{label}</label>
       <input
         className='w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none'
@@ -35,7 +41,7 @@ function AirportPicker({ label, options, value, onChange }) {
           setQuery(event.target.value);
           setIsOpen(true);
 
-          if (event.target.value !== value) {
+          if (event.target.value !== getLocationLabel(selectedLocation)) {
             onChange(undefined);
           }
         }}
@@ -45,7 +51,7 @@ function AirportPicker({ label, options, value, onChange }) {
           }
 
           if (event.key === 'Enter' && filteredOptions.length > 0) {
-            selectAirport(filteredOptions[0].value);
+            selectLocation(filteredOptions[0]);
           }
         }}
       />
@@ -55,17 +61,17 @@ function AirportPicker({ label, options, value, onChange }) {
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <button
-                key={option.value}
+                key={option.id}
                 className='block w-full px-3 py-2 text-left text-slate-900 hover:bg-slate-100'
                 type='button'
                 onMouseDown={(event) => event.preventDefault()}
-                onClick={() => selectAirport(option.value)}
+                onClick={() => selectLocation(option)}
               >
-                {option.name}
+                {getLocationLabel(option)}
               </button>
             ))
           ) : (
-            <div className='px-3 py-2 text-slate-500'>No airports found</div>
+            <div className='px-3 py-2 text-slate-500'>No locations found</div>
           )}
         </div>
       )}
