@@ -12,6 +12,10 @@ import {
   getPlaneRouteStatus,
 } from '../utils/routeUtils';
 import {
+  calculateBaseBux,
+  calculateCoins,
+} from '../utils/rewardUtils';
+import {
   loadCarrierPositions,
   saveCarrierPositions,
 } from '../utils/carrierPositions';
@@ -58,6 +62,8 @@ function DistanceCalc({ carrierPositions, setCarrierPositions }) {
   const fromLocation = fromLocationId ? selectableLocationDict[fromLocationId] : null;
   const toLocation = toLocationId ? selectableLocationDict[toLocationId] : null;
   const distance = calculateDistance(fromLocation, toLocation);
+  const coins = calculateCoins(distance);
+  const baseBux = calculateBaseBux(distance);
 
   const planeRender = (plane) => {
     const { colorClass, upgradeRequired } = getPlaneRouteStatus(
@@ -91,8 +97,10 @@ function DistanceCalc({ carrierPositions, setCarrierPositions }) {
         />
       </div>
 
-      <h3 className='p-4 text-center'>
-        Distance: {distance ? distance : 'N/A'}
+      <h3 className='flex flex-wrap justify-center gap-4 p-4 text-center'>
+        <span>Distance: {distance ? distance : 'N/A'}</span>
+        <span>🪙 Coins: {coins ? coins : 'N/A'}</span>
+        <span>💵 Bux: {baseBux ? baseBux : 'N/A'}</span>
       </h3>
 
       <div className='flex flex-wrap justify-center gap-2'>
